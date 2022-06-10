@@ -1,9 +1,14 @@
 package dev.synapsetech.bots.moderation
 
-fun main(args: Array<String>) {
-    println("Hello World!")
+import dev.synapsetech.bots.moderation.data.ModerationBotConfig
+import java.io.File
 
-    // Try adding program arguments via Run/Debug configuration.
-    // Learn more about running applications: https://www.jetbrains.com/help/idea/running-applications.html.
-    println("Program arguments: ${args.joinToString()}")
+fun main(args: Array<String>) {
+    val configFile = if (args.isEmpty()) {
+        println("No config specified, defaulting to ./config.json")
+        "./config.json"
+    } else args[0]
+    val cfg = ModerationBotConfig.loadFile(File(configFile))
+    val bot = BotImpl(cfg)
+    bot.start()
 }
