@@ -5,6 +5,9 @@ import dev.synapsetech.bots.moderation.data.Mongo
 import dev.synapsetech.bots.moderation.framework.command.CommandService
 import dev.synapsetech.bots.moderation.framework.command.LambdaCommand
 import dev.synapsetech.bots.moderation.framework.command.hooks.EnforceAllowDm
+import dev.synapsetech.bots.moderation.framework.command.hooks.EnforcePermissionHook
+import dev.synapsetech.util.Either
+import net.dv8tion.jda.api.EmbedBuilder
 import java.io.File
 
 fun main(args: Array<String>) {
@@ -21,6 +24,15 @@ fun main(args: Array<String>) {
 
     commandService.addHook(EnforceAllowDm {
         setDescription("This command must be used in an authorized server.")
+    })
+
+    commandService.addHook(EnforcePermissionHook { perms ->
+        val eb = EmbedBuilder()
+
+        val permsJoined = perms.joinToString(",") { "`${it.getName()}`" }
+        eb.setDescription("You are missing the following permissions to complete this action: $permsJoined.")
+
+        Either.Left(eb.build())
     })
 
     commandService.addCommand(LambdaCommand("ping", "Check the bot's gateway ping", true) {
