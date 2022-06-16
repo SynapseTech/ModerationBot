@@ -1,0 +1,9 @@
+{
+  "token": "",
+  "devServerId": 633738696620769310,
+  "dev": true,
+  "mongo": {
+    "connectionString": "mongodb://localhost:27017",
+    "database": "moderation_bot"
+  }
+}

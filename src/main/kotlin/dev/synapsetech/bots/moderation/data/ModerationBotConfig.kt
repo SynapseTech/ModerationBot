@@ -7,10 +7,24 @@ import kotlinx.serialization.json.Json
 import java.io.File
 
 @Serializable
+data class MongoConfiguration(
+    val connectionString: String,
+    val database: String,
+)
+
+@Serializable
 data class ModerationBotConfig(
     override val token: String,
+    override val devServerId: Long,
+    override val dev: Boolean? = false,
+    val mongo: MongoConfiguration,
 ) : RequiredConfig {
     companion object {
-        fun loadFile(file: File) = Json.decodeFromString<ModerationBotConfig>(file.readText())
+        lateinit var instance: ModerationBotConfig
+
+        fun loadFile(file: File): ModerationBotConfig {
+            instance = Json.decodeFromString(file.readText())
+            return instance
+        }
     }
 }

@@ -8,6 +8,9 @@ class BotImpl(config: ModerationBotConfig) : Bot<ModerationBotConfig>(config) {
         instance = this
     }
 
+    fun genInvite() =
+        "https://discord.com/api/oauth2/authorize?client_id=${jda?.selfUser?.id}&permissions=1505319316727&scope=bot%20applications.commands"
+
     companion object {
         lateinit var instance: BotImpl
     }
